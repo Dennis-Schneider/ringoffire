@@ -14,4 +14,17 @@
     position: absolute;
     width: 120px;
   }
+
+  .top-card {
+    cursor: pointer;
+    transition: all 85ms ease-in-out;
+    &:hover {
+      transform: scale(1.1) translateY(-8px);
+    }
+  }
+
+  .pick-card {
+    transition: all 125ms ease-in-out;
+    transform: scale(1.5) !important;
+  }
 }
