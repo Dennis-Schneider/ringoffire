@@ -17,16 +17,17 @@ export class GameComponent {
 
   newGame() {
     this.game = new Game();
-    console.log(this.game);
   }
   takeCard() {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop();
-      console.log(this.currentCard);
       this.pickCardAnimation = true;
+      console.log('new card: ' + this.currentCard);
+      console.log('played cards: ' + this.game.playedCards);
       setTimeout(() => {
+        this.game.playedCards.push(this.currentCard);
         this.pickCardAnimation = false;
-      }, 2500);
+      }, 1250);
     }
   }
 }
