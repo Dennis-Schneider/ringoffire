@@ -8,6 +8,7 @@ import { Game } from 'src/models/game';
 })
 export class GameComponent {
   pickCardAnimation = false;
+  currentCard: string = '';
   game: Game;
 
   ngOnInit(): void {
@@ -19,6 +20,8 @@ export class GameComponent {
     console.log(this.game);
   }
   takeCard() {
+    this.currentCard = this.game.stack.pop();
+    console.log(this.currentCard);
     this.pickCardAnimation = true;
   }
 }
