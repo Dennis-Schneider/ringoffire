@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ds-ring-of-fire": {
+      "hosting": {
+        "13-ringoffire": [
+          "ds-ring-of-fire"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ds-ring-of-fire"
+  }
+}
