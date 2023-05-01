@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -12,16 +14,25 @@ export class GameComponent {
   pickCardAnimation = false;
   currentCard: string = '';
   game: Game;
+  games$: Observable<any>; // prüfen wofür!
+  games: Array<any>; // prüfen wofür!
 
-  constructor(public dialog: MatDialog) {}
+  constructor(private firestore: Firestore, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.newGame();
+    const gamesCollection = collection(this.firestore, 'games');
+    this.games$ = collectionData(gamesCollection);
+    this.games$.subscribe((newGames) => {
+      console.log('mein Spiel', newGames);
+      this.games = newGames;
+    });
   }
 
   newGame() {
     this.game = new Game();
   }
+
   takeCard() {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop();
