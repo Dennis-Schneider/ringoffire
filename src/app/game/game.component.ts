@@ -2,7 +2,12 @@ import { Component } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import {
+  Firestore,
+  addDoc,
+  collection,
+  collectionData,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -31,6 +36,8 @@ export class GameComponent {
 
   newGame() {
     this.game = new Game();
+    const gamesCollection = collection(this.firestore, 'games');
+    addDoc(gamesCollection, { Game: 'new' });
     // const gamesCollection = collection(this.firestore, 'games');
   }
 
