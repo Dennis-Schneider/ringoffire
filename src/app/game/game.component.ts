@@ -31,6 +31,7 @@ export class GameComponent {
 
   newGame() {
     this.game = new Game();
+    // const gamesCollection = collection(this.firestore, 'games');
   }
 
   takeCard() {
