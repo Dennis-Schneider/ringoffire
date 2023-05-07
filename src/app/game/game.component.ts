@@ -9,6 +9,7 @@ import {
   collectionData,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -22,23 +23,32 @@ export class GameComponent {
   games$: Observable<any>; // prüfen wofür!
   games: Array<any>; // prüfen wofür!
 
-  constructor(private firestore: Firestore, public dialog: MatDialog) {}
+  constructor(
+    private route: ActivatedRoute,
+    private firestore: Firestore,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.newGame();
-    const gamesCollection = collection(this.firestore, 'games');
-    this.games$ = collectionData(gamesCollection);
-    this.games$.subscribe((newGames) => {
-      console.log('mein Spiel', newGames);
-      this.games = newGames;
+    this.route.params.subscribe((params) => {
+      console.log(params['id']);
+      const gamesCollection = collection(this.firestore, 'games', params['id']);
+      this.games$ = collectionData(gamesCollection);
+      this.games$.subscribe((game: any) => {
+        console.log('mein Spiel', game);
+        this.game.currentPlayer = game.currentPlayer;
+        this.game.playedCards = game.playedCards;
+        this.game.players = game.players;
+        this.game.stack = game.stack;
+      });
     });
   }
 
   newGame() {
     this.game = new Game();
-    const gamesCollection = collection(this.firestore, 'games');
-    addDoc(gamesCollection, this.game.toJson());
     // const gamesCollection = collection(this.firestore, 'games');
+    // addDoc(gamesCollection, this.game.toJson());
   }
 
   takeCard() {
