@@ -77,7 +77,7 @@ export class GameComponent {
       this.game.currentPlayer++;
       this.game.currentPlayer =
         this.game.currentPlayer % this.game.players.length;
-      this.saveGame();
+      // this.saveGame();
 
       setTimeout(() => {
         this.game.playedCards.push(this.game.currentCard);
@@ -100,6 +100,7 @@ export class GameComponent {
   saveGame() {
     const db = getFirestore();
     const docRef = doc(db, 'games', this.gameId);
+    console.log('save game: ' + this.game.toJson());
 
     updateDoc(docRef, this.game.toJson()).then((res) => {
       console.log('Speichern erfolgreich! ', res);
