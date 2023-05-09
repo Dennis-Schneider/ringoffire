@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import {
   Firestore,
-  addDoc,
   collection,
   collectionData,
   doc,
@@ -21,8 +20,6 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent {
-  pickCardAnimation = false;
-  currentCard: string = '';
   game: Game;
   games$: Observable<any[]>; // prüfen wofür!
   games: Array<any>; // prüfen wofür!
@@ -67,17 +64,20 @@ export class GameComponent {
     // addDoc(gamesCollection, this.game.toJson());
   }
 
+  /**
+   * The function takes a card from the game stack and assigns it to the current player, with a delay of
+   * 1 second.
+   */
   takeCard() {
     if (this.game.stack.length == 0) {
       alert('game over');
-    } else if (!this.pickCardAnimation) {
+    } else if (!this.game.pickCardAnimation) {
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimation = true;
 
       this.game.currentPlayer++;
       this.game.currentPlayer =
         this.game.currentPlayer % this.game.players.length;
-      // this.saveGame();
 
       setTimeout(() => {
         this.game.playedCards.push(this.game.currentCard);
@@ -100,8 +100,6 @@ export class GameComponent {
   saveGame() {
     const db = getFirestore();
     const docRef = doc(db, 'games', this.gameId);
-    console.log('save game: ' + this.game.toJson());
-
     updateDoc(docRef, this.game.toJson()).then((res) => {
       console.log('Speichern erfolgreich! ', res);
     });
